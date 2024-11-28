@@ -3,10 +3,13 @@ import {
     Component,
     ChangeDetectionStrategy,
     ViewEncapsulation,
+    OnInit,
 } from "@angular/core";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { PhotoDto } from "@photoLibrary/dto";
+import { PhotoService } from "@photoLibrary/services";
 
 @Component({
     selector: "app-photo-grid",
@@ -22,11 +25,26 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class PhotoGridComponent {
-    photos = [
-        { url: "https://picsum.photos/300?random=1", title: "Photo 1" },
-        { url: "https://picsum.photos/300?random=2", title: "Photo 2" },
-        { url: "https://picsum.photos/300?random=3", title: "Photo 3" },
-    ];
+export class PhotoGridComponent implements OnInit {
+    photos: PhotoDto[] = [];
     isLoading = false;
+
+    constructor(private _photoService: PhotoService) {}
+
+    ngOnInit(): void {
+        this._loadPhotos();
+    }
+
+    private _loadPhotos(): void {
+        this.isLoading = true;
+
+        try {
+            this.photos = this._photoService.getRandomPhotos(10);
+        } catch (err) {
+            console.error("Failed to load photos:", err);
+            this.photos = [];
+        } finally {
+            this.isLoading = false;
+        }
+    }
 }

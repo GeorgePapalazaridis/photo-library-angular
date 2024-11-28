@@ -36,3 +36,6 @@ build/
 # Other temporary files
 .tmp/
 *.swp
+
+.nx/cache
+.nx/workspace-data

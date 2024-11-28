@@ -14,7 +14,7 @@ import { PhotoDto } from "@photoLibrary/dto";
 export class PhotoService {
     private readonly BASE_URL = "https://picsum.photos/300";
 
-    getRandomPhotos(count: number): PhotoDto[] {
+    getRandomPhotos(count: number = 3): PhotoDto[] {
         const photos: PhotoDto[] = [];
         for (let i = 1; i <= count; i++) {
             photos.push({

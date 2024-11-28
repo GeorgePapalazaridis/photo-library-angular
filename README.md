@@ -51,7 +51,7 @@ The project is organized into the following key folders:
 
 -   Project setup and folder structure have been finalized.
 -   Routes are configured in `app.config.ts`.
--   Global SCSS styles are loaded through `core/styles/styles.scss`.
+-   Global SCSS styles are loaded through `core/theming/styles.scss`.
 -   Initial components and service structure are ready for further implementation.
 
 ## 📂 Project Structure

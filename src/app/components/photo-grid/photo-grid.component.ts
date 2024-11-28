@@ -4,6 +4,7 @@ import {
     ChangeDetectionStrategy,
     ViewEncapsulation,
     OnInit,
+    ChangeDetectorRef,
 } from "@angular/core";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
@@ -13,9 +14,9 @@ import { PhotoService } from "@photoLibrary/services";
 
 @Component({
     selector: "app-photo-grid",
-    standalone: true,
     templateUrl: "./photo-grid.component.html",
     styleUrls: ["./photo-grid.component.scss"],
+    standalone: true,
     imports: [
         CommonModule,
         MatGridListModule,
@@ -29,7 +30,10 @@ export class PhotoGridComponent implements OnInit {
     photos: PhotoDto[] = [];
     isLoading = false;
 
-    constructor(private _photoService: PhotoService) {}
+    constructor(
+        private _photoService: PhotoService,
+        private _cd: ChangeDetectorRef
+    ) {}
 
     ngOnInit(): void {
         this._loadPhotos();
@@ -37,14 +41,20 @@ export class PhotoGridComponent implements OnInit {
 
     private _loadPhotos(): void {
         this.isLoading = true;
+        this._cd.detectChanges();
 
-        try {
-            this.photos = this._photoService.getRandomPhotos(10);
-        } catch (err) {
-            console.error("Failed to load photos:", err);
-            this.photos = [];
-        } finally {
-            this.isLoading = false;
-        }
+        const delay = Math.random() * 100 + 200;
+
+        setTimeout(() => {
+            try {
+                this.photos = this._photoService.getRandomPhotos(6);
+            } catch (err) {
+                console.error("Failed to load photos:", err);
+                this.photos = [];
+            } finally {
+                this.isLoading = false;
+                this._cd.detectChanges();
+            }
+        }, delay);
     }
 }

@@ -1,0 +1,41 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Dependency directories
+node_modules/
+
+# Angular build outputs
+dist/
+build/
+
+# Angular CLI cache
+.angular/cache/
+
+# IDE and editor settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Angular environment files
+/src/environments/environment*.ts
+
+# Other temporary files
+.tmp/
+*.swp
+
+.nx/cache
+.nx/workspace-data

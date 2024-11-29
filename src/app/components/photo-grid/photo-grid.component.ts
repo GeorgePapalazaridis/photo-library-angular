@@ -14,8 +14,10 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { PhotoDto } from "@photoLibrary/dto";
-import { PhotoService } from "@photoLibrary/services";
+import { FavoritesService, PhotoService } from "@photoLibrary/services";
 import { LoadingSpinnerComponent } from "@photoLibrary/shared";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
 
 @Component({
     selector: "app-photo-grid",
@@ -28,6 +30,8 @@ import { LoadingSpinnerComponent } from "@photoLibrary/shared";
         MatCardModule,
         MatProgressSpinnerModule,
         LoadingSpinnerComponent,
+        MatIconModule,
+        MatButtonModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -44,6 +48,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(
         private _photoService: PhotoService,
+        private _favoritesService: FavoritesService,
         private _cd: ChangeDetectorRef
     ) {}
 
@@ -62,6 +67,20 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
             console.log("[INFO] Disconnecting IntersectionObserver...");
             this._observer.disconnect();
         }
+    }
+
+    toggleFavorite(photo: PhotoDto): void {
+        if (this.isFavorite(photo)) {
+            this._favoritesService.removeFromFavorites(photo.url);
+        } else {
+            this._favoritesService.addToFavorites(photo);
+        }
+    }
+
+    isFavorite(photo: PhotoDto): boolean {
+        return this._favoritesService
+            .getFavorites()
+            .some((item) => item.url === photo.url);
     }
 
     private _initializeIntersectionObserver(): void {

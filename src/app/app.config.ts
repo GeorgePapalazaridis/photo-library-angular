@@ -11,13 +11,13 @@ export const routes: Routes = [
                 (c) => c.PhotoGridComponent
             ),
     },
-    // {
-    //     path: "favorites",
-    //     loadComponent: () =>
-    //         import("./components/favorites/favorites.component").then(
-    //             (c) => c.FavoritesComponent
-    //         ),
-    // },
+    {
+        path: "favorites",
+        loadComponent: () =>
+            import("./components/favorites/favorites.component").then(
+                (c) => c.FavoritesComponent
+            ),
+    },
     // {
     //     path: "photos/:id",
     //     loadComponent: () =>

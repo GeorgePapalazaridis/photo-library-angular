@@ -83,7 +83,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
     isFavorite(photo: PhotoDto): boolean {
         return this._favoritesService
             .getFavorites()
-            .some((item) => item.id === photo.id);
+            .some((favorite) => favorite.id === photo.id);
     }
 
     private _initializeIntersectionObserver(): void {

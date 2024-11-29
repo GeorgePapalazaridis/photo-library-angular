@@ -2,7 +2,7 @@
   <mat-grid-list cols="3" rowHeight="1:1" gutter="16px">
     <mat-grid-tile *ngFor="let photo of photos; let i = index">
 
-      <mat-card>
+      <mat-card [ngClass]="{'favorite': isFavorite(photo)}">
         <img mat-card-image [src]="photo.url || 'assets/images/placeholder-image.png'" [alt]="photo.title"
           loading="lazy" />
         <mat-card-content>

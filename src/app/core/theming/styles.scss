@@ -23,3 +23,12 @@ mat-grid-list {
     transform: translate(-50%, -50%);
     z-index: 1000;
 }
+
+.scroll-anchor {
+    height: 10px;
+    width: 100%;
+    background: transparent;
+
+    // for debugging
+    //  background: rgba(255, 0, 0, 0.5); /* Semi-transparent red for debugging */
+}

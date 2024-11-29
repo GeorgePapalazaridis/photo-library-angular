@@ -1,12 +1,16 @@
 .photo-grid-wrapper {
     position: relative;
-}
 
-.scroll-anchor {
-    height: 10px;
-    width: 100%;
-    background: transparent;
+    .favorite {
+        border: 2px solid #ff4081; /* Highlight border color for favorites */
+        box-shadow: 0px 4px 8px rgba(255, 64, 129, 0.3);
+    }
 
-    // for debugging
-    //  background: rgba(255, 0, 0, 0.5); /* Semi-transparent red for debugging */
+    mat-card img {
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .favorite img {
+        transform: scale(1.05); /* Slight zoom effect for favorites */
+    }
 }

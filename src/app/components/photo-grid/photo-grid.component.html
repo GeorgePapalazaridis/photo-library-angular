@@ -2,14 +2,15 @@
   <mat-grid-list cols="3" rowHeight="1:1" gutter="16px">
     <mat-grid-tile *ngFor="let photo of photos; let i = index">
       <mat-card>
-        <img mat-card-image [src]="photo.url || 'assets/images/placeholder-image.png'" [alt]="photo.title" />
+        <img mat-card-image [src]="photo.url || 'assets/images/placeholder-image.png'" [alt]="photo.title"
+          loading="lazy" />
         <mat-card-content>
           <h3>{{ i + 1 }}: {{ photo.title }}</h3>
         </mat-card-content>
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
-  <div #scrollAnchor class="scroll-anchor"></div> <!-- Scroll anchor element -->
+  <div #scrollAnchor class="scroll-anchor"></div>
 </div>
 <app-loading-spinner *ngIf="isLoading" />
 <p *ngIf="!photos.length && !isLoading">No photos available. Start scrolling to load more.</p>

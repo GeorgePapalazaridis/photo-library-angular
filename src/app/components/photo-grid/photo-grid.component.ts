@@ -48,44 +48,60 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
+        console.log("PhotoGridComponent initialized.");
         this._loadInitialPhotos();
     }
 
     ngAfterViewInit(): void {
+        console.log("Setting up IntersectionObserver...");
         this._initializeIntersectionObserver();
     }
 
     ngOnDestroy(): void {
         if (this._observer) {
+            console.log("[INFO] Disconnecting IntersectionObserver...");
             this._observer.disconnect();
         }
     }
 
     private _initializeIntersectionObserver(): void {
+        if (!this.scrollAnchor) {
+            console.error("Scroll anchor element not found!");
+            return;
+        }
+
         this._observer = new IntersectionObserver(
             (entries) => {
                 const target = entries[0];
-                console.log("IntersectionObserver entry:", target);
+                console.log("IntersectionObserver entry:", target); // for debugging
+
                 if (target.isIntersecting && !this.isLoading) {
                     console.log(
-                        "Scroll anchor intersecting, loading more photos..."
+                        "Scroll anchor is intersecting. Loading more photos..."
                     );
                     this._loadMorePhotos();
                 }
             },
-            { threshold: 1.0 } // Trigger only when fully in view
+            { threshold: 0.5 } // Trigger only when fully visible
         );
 
         this._observer.observe(this.scrollAnchor.nativeElement);
-        console.log("Observer initialized and observing scroll anchor...");
+        console.log("Observer initialized and observing the scroll anchor..."); // for debugging
     }
 
     private _loadInitialPhotos(): void {
+        console.log("Loading initial photos..."); // for debugging
         this._loadPhotos(6); // Load 6 photos initially
     }
 
     private _loadMorePhotos(): void {
-        if (this._totalPhotosFetched >= this._maxPhotos) return; // Stop fetching if max photos reached
+        console.log("Attempting to load more photos..."); // for debugging
+        if (this._totalPhotosFetched >= this._maxPhotos) {
+            console.warn(
+                "Reached the maximum number of photos. No more loading."
+            );
+            return;
+        }
         this._loadPhotos(6); // Load 6 photos per trigger
     }
 
@@ -95,19 +111,33 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._cd.detectChanges();
 
         try {
-            const newPhotos = await this._photoService.getRandomPhotos(count);
+            console.log("Starting to load photos...");
+            await this._simulateServerDelay(1000); // Simulate server delay
+
+            console.log(`Fetching ${count} random photos...`); // for debugging
+            const newPhotos = this._photoService.getRandomPhotos(count);
             this.photos = [...this.photos, ...newPhotos];
             this._totalPhotosFetched += newPhotos.length;
-            console.log("Loaded photos:", newPhotos);
-        } catch (error) {
-            console.error("Failed to load photos:", error);
-        } finally {
-            this.isLoading = false;
-            this._cd.detectChanges(); // Update UI after loading
+            console.log("Loaded photos:", newPhotos); // for debugging
+            console.log(`Total photos fetched: ${this._totalPhotosFetched}`); // for debugging
 
-            // Re-observe the scroll anchor
-            this._observer.observe(this.scrollAnchor.nativeElement);
-            console.log("Re-observing scroll anchor...");
+            // Reconnect the observer to recheck the scroll anchor
+            if (this.scrollAnchor && this._observer) {
+                console.log("Reconnecting IntersectionObserver..."); // for debugging
+                this._observer.unobserve(this.scrollAnchor.nativeElement);
+                this._observer.observe(this.scrollAnchor.nativeElement);
+            }
+        } catch (error) {
+            console.error("Error while loading photos:", error);
+        } finally {
+            console.log("Finished loading photos."); // for debugging
+            this.isLoading = false;
+            this._cd.detectChanges();
         }
+    }
+
+    private _simulateServerDelay(delay: number): Promise<void> {
+        console.log(`Simulating a delay of ${delay}ms...`); // for debugging
+        return new Promise((resolve) => setTimeout(resolve, delay));
     }
 }

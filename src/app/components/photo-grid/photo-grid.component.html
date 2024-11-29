@@ -9,11 +9,7 @@
       </mat-card>
     </mat-grid-tile>
   </mat-grid-list>
+  <div #scrollAnchor class="scroll-anchor"></div> <!-- Scroll anchor element -->
 </div>
-
 <app-loading-spinner *ngIf="isLoading" />
-
-<!-- Scroll Anchor for Intersection Observer -->
-<div #scrollAnchor class="scroll-anchor"></div>
-
 <p *ngIf="!photos.length && !isLoading">No photos available. Start scrolling to load more.</p>

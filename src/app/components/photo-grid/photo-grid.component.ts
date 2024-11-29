@@ -65,7 +65,11 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._observer = new IntersectionObserver(
             (entries) => {
                 const target = entries[0];
+                console.log("IntersectionObserver entry:", target);
                 if (target.isIntersecting && !this.isLoading) {
+                    console.log(
+                        "Scroll anchor intersecting, loading more photos..."
+                    );
                     this._loadMorePhotos();
                 }
             },
@@ -73,6 +77,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         );
 
         this._observer.observe(this.scrollAnchor.nativeElement);
+        console.log("Observer initialized and observing scroll anchor...");
     }
 
     private _loadInitialPhotos(): void {
@@ -90,14 +95,19 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         this._cd.detectChanges();
 
         try {
-            const newPhotos = this._photoService.getRandomPhotos(count);
+            const newPhotos = await this._photoService.getRandomPhotos(count);
             this.photos = [...this.photos, ...newPhotos];
             this._totalPhotosFetched += newPhotos.length;
+            console.log("Loaded photos:", newPhotos);
         } catch (error) {
             console.error("Failed to load photos:", error);
         } finally {
             this.isLoading = false;
             this._cd.detectChanges(); // Update UI after loading
+
+            // Re-observe the scroll anchor
+            this._observer.observe(this.scrollAnchor.nativeElement);
+            console.log("Re-observing scroll anchor...");
         }
     }
 }

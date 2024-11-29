@@ -1,19 +1,10 @@
 @import "./layouts/main.scss";
 @import "./layouts/responsive.scss";
-
 @import "./normalize.scss";
 @import "./theme-variables.scss";
 
-// mat-spinner {
-//     position: absolute;
-//     top: 50%;
-//     left: 50%;
-//     transform: translate(-50%, -50%);
-//     z-index: 10;
-// }
-
 mat-grid-list {
-    border: 1px solid red;
+    border: 1px solid black;
 }
 
 .spinner-container {

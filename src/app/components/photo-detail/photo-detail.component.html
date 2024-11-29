@@ -1,0 +1,16 @@
+<div class="photo-detail">
+    <mat-card class="photo-container">
+        <img mat-card-image [src]="photo.url" [alt]="photo.title" class="photo-detail-image" />
+
+        <mat-card-content>
+            <h3>{{ photo.title }}</h3>
+        </mat-card-content>
+
+        <mat-card-actions>
+            <button *ngIf="photo" mat-raised-button color="warn" (click)="removeFromFavorites()" class="remove-btn">
+                <mat-icon>delete</mat-icon>
+                Remove from Favorites
+            </button>
+        </mat-card-actions>
+    </mat-card>
+</div>

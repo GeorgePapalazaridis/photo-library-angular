@@ -12,6 +12,7 @@ import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { PhotoDto } from "@photoLibrary/dto";
 import { PhotoService } from "@photoLibrary/services";
+import { LoadingSpinnerComponent } from "@photoLibrary/shared";
 
 @Component({
     selector: "app-photo-grid",
@@ -23,6 +24,7 @@ import { PhotoService } from "@photoLibrary/services";
         MatGridListModule,
         MatCardModule,
         MatProgressSpinnerModule,
+        LoadingSpinnerComponent,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
@@ -30,9 +32,9 @@ import { PhotoService } from "@photoLibrary/services";
 export class PhotoGridComponent implements OnInit {
     photos: PhotoDto[] = [];
     isLoading = false;
-    private scrollTimeout!: ReturnType<typeof setTimeout>;
-    private maxPhotos = 300; // Limit for photos to prevent infinite fetches
-    private totalPhotosFetched = 0; // Tracks how many photos have been fetched
+    private _scrollTimeout!: ReturnType<typeof setTimeout>;
+    private _maxPhotos = 300; // Limit for photos to prevent infinite fetches
+    private _totalPhotosFetched = 0; // Tracks how many photos have been fetched
 
     constructor(
         private _photoService: PhotoService,
@@ -52,7 +54,7 @@ export class PhotoGridComponent implements OnInit {
 
     // Loads photos from the service
     private async _loadPhotos(): Promise<void> {
-        if (this.isLoading || this.totalPhotosFetched >= this.maxPhotos) {
+        if (this.isLoading || this._totalPhotosFetched >= this._maxPhotos) {
             console.log(
                 "Cannot load photos: Either already loading or max photos reached."
             );
@@ -67,7 +69,7 @@ export class PhotoGridComponent implements OnInit {
         try {
             await this._simulateLoadingDelay(); // Simulate server delay
             const newPhotos = this._photoService.getRandomPhotos(6); // Fetch 6 new photos
-            this.totalPhotosFetched += newPhotos.length;
+            this._totalPhotosFetched += newPhotos.length;
             console.log("New photos fetched:", newPhotos);
 
             this.photos = [...this.photos, ...newPhotos]; // Append new photos to the list
@@ -102,8 +104,8 @@ export class PhotoGridComponent implements OnInit {
     onScroll(event: Event): void {
         console.log("Scroll event triggered:", event);
 
-        clearTimeout(this.scrollTimeout); // Clear any previous timeout
-        this.scrollTimeout = setTimeout(() => {
+        clearTimeout(this._scrollTimeout); // Clear any previous timeout
+        this._scrollTimeout = setTimeout(() => {
             if (this._isScrollAtBottom() && !this.isLoading) {
                 console.log(
                     "Scroll detected near the bottom. Loading more photos..."

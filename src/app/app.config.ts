@@ -18,13 +18,13 @@ export const routes: Routes = [
                 (c) => c.FavoritesComponent
             ),
     },
-    // {
-    //     path: "photos/:id",
-    //     loadComponent: () =>
-    //         import("./components/photo-detail/photo-detail.component").then(
-    //             (c) => c.PhotoDetailComponent
-    //         ),
-    // },
+    {
+        path: "photos/:id",
+        loadComponent: () =>
+            import("./components/photo-detail/photo-detail.component").then(
+                (c) => c.PhotoDetailComponent
+            ),
+    },
     { path: "**", redirectTo: "/photos" },
 ];
 

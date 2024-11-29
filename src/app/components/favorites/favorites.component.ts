@@ -12,6 +12,7 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
+import { RouterModule } from "@angular/router";
 
 @Component({
     selector: "app-favorites",
@@ -24,6 +25,7 @@ import { MatButtonModule } from "@angular/material/button";
         MatCardModule,
         MatIconModule,
         MatButtonModule,
+        RouterModule,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,

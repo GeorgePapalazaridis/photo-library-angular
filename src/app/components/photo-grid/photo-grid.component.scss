@@ -1,2 +1,12 @@
 .photo-grid-wrapper {
+    position: relative;
+}
+
+.scroll-anchor {
+    height: 10px;
+    width: 100%;
+    background: transparent;
+
+    // for debugging
+    //  background: rgba(255, 0, 0, 0.5); /* Semi-transparent red for debugging */
 }

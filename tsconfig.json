@@ -24,9 +24,6 @@
         "paths": {
             "@photoLibrary/dto": ["src/app/core/dto/index.ts"],
             "@photoLibrary/services": ["src/app/core/services/index.ts"],
-            "@photoLibrary/interceptors": [
-                "src/app/core/interceptors/index.ts"
-            ],
             "@photoLibrary/pipes": ["src/app/core/pipes/index.ts"],
             "@photoLibrary/interfaces": ["src/app/core/interfaces/index.ts"],
             "@photoLibrary/shared": ["src/app/shared/index.ts"]

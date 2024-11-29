@@ -1,4 +1,5 @@
-<nav>
-    <button mat-button routerLink="/" routerLinkActive="active">Photo Grid</button>
-    <button mat-button routerLink="/favorites" routerLinkActive="active">Favorites</button>
-</nav>
+<nav class="header-nav">
+    <button mat-button routerLink="/photos" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Photo Grid</button>
+    <button mat-button routerLink="/favorites" routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">Favorites</button>
+  </nav>
+  

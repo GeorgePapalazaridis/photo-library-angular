@@ -1,0 +1,13 @@
+mat-grid-list {
+    @media (max-width: 768px) {
+        cols: 1;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+        cols: 2;
+    }
+
+    @media (min-width: 1025px) {
+        cols: 3;
+    }
+}

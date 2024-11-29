@@ -17,3 +17,28 @@ body {
     min-height: 100%;
     scroll-behavior: smooth;
 }
+
+main {
+    padding: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 16px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+}
+
+nav button {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.active {
+    color: #1976d2;
+    text-decoration: underline;
+}

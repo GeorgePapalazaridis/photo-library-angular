@@ -1,0 +1,28 @@
+<div class="favorites-wrapper">
+    <div *ngIf="favorites.length; else emptyState">
+        <h2>Your Favorites Photos!</h2>
+
+        <mat-grid-list cols="3" rowHeight="1:1" gutter="16px">
+            <mat-grid-tile *ngFor="let photo of favorites">
+
+                <mat-card>
+                    <img mat-card-image [src]="photo.url" [alt]="photo.title" loading="lazy" />
+                    <mat-card-content>
+                        <h3>{{ photo.title }}</h3>
+                    </mat-card-content>
+
+                    <mat-card-actions>
+                        <button mat-icon-button color="warn" (click)="removeFavorite(photo.id)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </mat-card-actions>
+                </mat-card>
+
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
+</div>
+
+<ng-template #emptyState>
+    <p>No favorites yet. Start adding photos to your Favorites!</p>
+</ng-template>

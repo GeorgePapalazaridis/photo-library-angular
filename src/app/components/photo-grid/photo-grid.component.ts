@@ -5,7 +5,10 @@ import {
     ViewEncapsulation,
     OnInit,
     ChangeDetectorRef,
-    HostListener,
+    ViewChild,
+    ElementRef,
+    AfterViewInit,
+    OnDestroy,
 } from "@angular/core";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
@@ -29,12 +32,15 @@ import { LoadingSpinnerComponent } from "@photoLibrary/shared";
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class PhotoGridComponent implements OnInit {
+export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
+    private _observer!: IntersectionObserver;
+    private _maxPhotos = 300;
+    private _totalPhotosFetched = 0;
+
+    @ViewChild("scrollAnchor", { static: true }) scrollAnchor!: ElementRef;
+
     photos: PhotoDto[] = [];
     isLoading = false;
-    private _scrollTimeout!: ReturnType<typeof setTimeout>;
-    private _maxPhotos = 300; // Limit for photos to prevent infinite fetches
-    private _totalPhotosFetched = 0; // Tracks how many photos have been fetched
 
     constructor(
         private _photoService: PhotoService,
@@ -42,76 +48,56 @@ export class PhotoGridComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        console.log("Initializing PhotoGridComponent...");
-        this._loadPhotos(); // Load initial photos on component initialization
+        this._loadInitialPhotos();
     }
 
-    // Simulates an API delay
-    private async _simulateLoadingDelay(): Promise<void> {
-        console.log("Simulating delay...");
-        return new Promise((resolve) => setTimeout(resolve, 1000)); // 1-second delay
+    ngAfterViewInit(): void {
+        this._initializeIntersectionObserver();
     }
 
-    // Loads photos from the service
-    private async _loadPhotos(): Promise<void> {
-        if (this.isLoading || this._totalPhotosFetched >= this._maxPhotos) {
-            console.log(
-                "Cannot load photos: Either already loading or max photos reached."
-            );
-            return;
+    ngOnDestroy(): void {
+        if (this._observer) {
+            this._observer.disconnect();
         }
+    }
 
+    private _initializeIntersectionObserver(): void {
+        this._observer = new IntersectionObserver(
+            (entries) => {
+                const target = entries[0];
+                if (target.isIntersecting && !this.isLoading) {
+                    this._loadMorePhotos();
+                }
+            },
+            { threshold: 1.0 } // Trigger only when fully in view
+        );
+
+        this._observer.observe(this.scrollAnchor.nativeElement);
+    }
+
+    private _loadInitialPhotos(): void {
+        this._loadPhotos(6); // Load 6 photos initially
+    }
+
+    private _loadMorePhotos(): void {
+        if (this._totalPhotosFetched >= this._maxPhotos) return; // Stop fetching if max photos reached
+        this._loadPhotos(6); // Load 6 photos per trigger
+    }
+
+    private async _loadPhotos(count: number): Promise<void> {
+        if (this.isLoading) return; // Prevent redundant calls
         this.isLoading = true;
-        console.log("Spinner visibility (before load):", this.isLoading);
         this._cd.detectChanges();
 
-        console.log("Loading started, spinner should be visible.");
         try {
-            await this._simulateLoadingDelay(); // Simulate server delay
-            const newPhotos = this._photoService.getRandomPhotos(6); // Fetch 6 new photos
+            const newPhotos = this._photoService.getRandomPhotos(count);
+            this.photos = [...this.photos, ...newPhotos];
             this._totalPhotosFetched += newPhotos.length;
-            console.log("New photos fetched:", newPhotos);
-
-            this.photos = [...this.photos, ...newPhotos]; // Append new photos to the list
-            console.log(
-                "Updated photos array for grid rendering:",
-                this.photos
-            );
+        } catch (error) {
+            console.error("Failed to load photos:", error);
         } finally {
             this.isLoading = false;
-            console.log("Spinner visibility (after load):", this.isLoading);
-            this._cd.detectChanges();
-            console.log("Loading finished, spinner should disappear.");
+            this._cd.detectChanges(); // Update UI after loading
         }
-    }
-
-    // Checks if the user has scrolled near the bottom
-    private _isScrollAtBottom(): boolean {
-        const scrollHeight = document.documentElement.scrollHeight;
-        const scrollTop = document.documentElement.scrollTop;
-        const clientHeight = document.documentElement.clientHeight;
-
-        console.log("Scroll position data:", {
-            scrollHeight,
-            scrollTop,
-            clientHeight,
-        });
-        return scrollTop + clientHeight >= scrollHeight - 10;
-    }
-
-    // Detects scrolling and triggers loading of more photos
-    @HostListener("window:scroll", ["$event"])
-    onScroll(event: Event): void {
-        console.log("Scroll event triggered:", event);
-
-        clearTimeout(this._scrollTimeout); // Clear any previous timeout
-        this._scrollTimeout = setTimeout(() => {
-            if (this._isScrollAtBottom() && !this.isLoading) {
-                console.log(
-                    "Scroll detected near the bottom. Loading more photos..."
-                );
-                this._loadPhotos(); // Load more photos
-            }
-        }, 200); // Debounce the scroll event
     }
 }

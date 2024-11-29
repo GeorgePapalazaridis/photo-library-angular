@@ -1,3 +1,9 @@
 .photo-grid-wrapper {
     position: relative;
 }
+
+.scroll-anchor {
+    height: 1px; /* Minimal height */
+    width: 100%;
+    background: transparent;
+}

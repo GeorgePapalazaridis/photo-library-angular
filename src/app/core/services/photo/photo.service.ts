@@ -15,13 +15,15 @@ export class PhotoService {
     private readonly BASE_URL = "https://picsum.photos/300";
 
     getRandomPhotos(count: number = 3): PhotoDto[] {
+        console.log(`Fetching ${count} random photos...`);
         const photos: PhotoDto[] = [];
         for (let i = 1; i <= count; i++) {
             photos.push({
-                url: `${this.BASE_URL}?random=${i}`,
+                url: `${this.BASE_URL}?random=${Math.random()}`,
                 title: `Photo ${i}`,
             });
         }
+        console.log("Generated photos:", photos);
         return photos;
     }
 }

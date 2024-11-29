@@ -1,13 +1,24 @@
 <div class="photo-grid-wrapper">
     <mat-grid-list cols="3" rowHeight="1:1" gutter="16px">
-        <mat-grid-tile *ngFor="let photo of photos">
-            <mat-card>
-                <img mat-card-image [src]="photo.url" [alt]="photo.title" />
-                <mat-card-content>
-                    <h3> {{photo.title}}</h3>
-                </mat-card-content>
-            </mat-card>
-        </mat-grid-tile>
+      <mat-grid-tile *ngFor="let photo of photos; let i = index">
+        <mat-card>
+          <img
+            mat-card-image
+            [src]="photo.url || 'assets/images/placeholder-image.png'"
+            [alt]="photo.title"
+          />
+          <mat-card-content>
+            <h3>{{ i + 1 }}: {{ photo.title }}</h3>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
     </mat-grid-list>
-</div>
-<mat-spinner *ngIf="isLoading" color="primary" />
+  </div>
+  
+  <div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner color="primary"></mat-spinner>
+  </div>
+
+  <p *ngIf="!photos.length && !isLoading">No photos available. Start scrolling to load more.</p>
+
+  

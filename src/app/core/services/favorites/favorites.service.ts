@@ -11,22 +11,24 @@ export class FavoritesService {
 
     getFavorites(): PhotoDto[] {
         const favorites = localStorage.getItem(this._favoritesKey);
-        return favorites ? JSON.parse(favorites) : [];
+        const parsedFavorites = JSON.parse(favorites || "[]");
+
+        return parsedFavorites;
     }
 
     addToFavorites(photo: PhotoDto): void {
         const favorites = this.getFavorites();
-        if (!favorites.find((item) => item.url === photo.url)) {
+
+        if (!favorites.find((item) => item.id === photo.id)) {
             favorites.push(photo);
+
             localStorage.setItem(this._favoritesKey, JSON.stringify(favorites));
         }
     }
 
     removeFromFavorites(photoId: string): void {
         const favorites = this.getFavorites();
-        const updateFavorites = favorites.filter(
-            (item) => item.url !== photoId
-        );
+        const updateFavorites = favorites.filter((item) => item.id !== photoId);
         localStorage.setItem(
             this._favoritesKey,
             JSON.stringify(updateFavorites)

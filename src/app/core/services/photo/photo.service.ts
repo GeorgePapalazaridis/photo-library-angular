@@ -12,34 +12,25 @@ import { PhotoDto } from "@photoLibrary/dto";
     providedIn: "root",
 })
 export class PhotoService {
-    private readonly BASE_URL = "https://picsum.photos/300";
-
-    // getRandomPhotos(count: number = 3): Promise<PhotoDto[]> {
-    //     console.log(`Fetching ${count} random photos...`);
-    //     return new Promise((resolve) => {
-    //         setTimeout(() => {
-    //             const photos: PhotoDto[] = [];
-    //             for (let i = 1; i <= count; i++) {
-    //                 photos.push({
-    //                     url: `${this.BASE_URL}?random=${Math.random()}`,
-    //                     title: `Photo ${i}`,
-    //                 });
-    //             }
-    //             console.log("Generated photos:", photos);
-    //             resolve(photos);
-    //         }, 1000); // Simulate a 1-second delay
-    //     });
-    // }
+    private readonly BASE_URL = "https://picsum.photos/id"; // Endpoint for fetching by ID
 
     getRandomPhotos(count: number = 3): PhotoDto[] {
         console.log(`Fetching ${count} random photos...`);
         const photos: PhotoDto[] = [];
-        for (let i = 1; i <= count; i++) {
+
+        // Get random numbers for photo IDs (you can modify this to use a range or API if needed)
+        const randomPhotoIds = Array.from({ length: count }, () =>
+            Math.floor(Math.random() * 1000)
+        ); // Assuming 1000 images
+
+        randomPhotoIds.forEach((photoId, index) => {
             photos.push({
-                url: `${this.BASE_URL}?random=${Math.random()}`,
-                title: `Photo ${i}`,
+                id: photoId.toString(),
+                url: `${this.BASE_URL}/${photoId}/300/200`, // URL format for Picsum
+                title: `Photo ${index + 1}`,
             });
-        }
+        });
+
         console.log("Generated photos:", photos);
         return photos;
     }

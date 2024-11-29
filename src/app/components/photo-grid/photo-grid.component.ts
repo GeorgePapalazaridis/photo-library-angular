@@ -70,9 +70,12 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     toggleFavorite(photo: PhotoDto): void {
+        console.log("Toggling favorite for photo:", photo); // for debugging
+
         if (this.isFavorite(photo)) {
-            this._favoritesService.removeFromFavorites(photo.url);
+            this._favoritesService.removeFromFavorites(photo.id);
         } else {
+            console.log("Adding to favorites:", photo); // for debugging
             this._favoritesService.addToFavorites(photo);
         }
     }
@@ -80,7 +83,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
     isFavorite(photo: PhotoDto): boolean {
         return this._favoritesService
             .getFavorites()
-            .some((item) => item.url === photo.url);
+            .some((item) => item.id === photo.id);
     }
 
     private _initializeIntersectionObserver(): void {

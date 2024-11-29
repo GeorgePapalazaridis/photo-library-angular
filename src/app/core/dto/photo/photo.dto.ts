@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import { IsNotEmpty, IsString, IsUUID } from "class-validator";
 
 export class PhotoDto {
     @IsString()
@@ -8,4 +8,8 @@ export class PhotoDto {
     @IsString()
     @IsNotEmpty()
     title!: string;
+
+    @IsUUID()
+    @IsNotEmpty()
+    id!: string;
 }

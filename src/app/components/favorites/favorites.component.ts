@@ -38,18 +38,17 @@ export class FavoritesComponent implements OnInit {
 
     ngOnInit(): void {
         console.log("FavoritesComponent initialized.");
-        // this.loadFavorites();
-
-        // Temporary test data, ToDo: Remove
-        this.favorites = [
-            { url: "https://picsum.photos/id/1/300/200", title: "Photo 1" },
-            { url: "https://picsum.photos/id/2/300/200", title: "Photo 2" },
-            { url: "https://picsum.photos/id/3/300/200", title: "Photo 3" },
-        ];
+        this.loadFavorites();
     }
 
     loadFavorites(): void {
         this.favorites = this._favoritesService.getFavorites();
+        // Use the ID to get the correct image URL
+        this.favorites.forEach((favorite) => {
+            // Fetch photo using the ID from Picsum
+            const url = `https://picsum.photos/id/${favorite.id}/300/200`;
+            favorite.url = url;
+        });
         this._cd.detectChanges();
     }
 

@@ -134,7 +134,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
 
         try {
             console.log("Starting to load photos...");
-            await this._simulateServerDelay(1000); // Simulate server delay
+            await this._simulateServerDelay(); // Simulate server delay
 
             console.log(`Fetching ${count} random photos...`); // for debugging
             const newPhotos = this._photoService.getRandomPhotos(count);
@@ -158,7 +158,8 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    private _simulateServerDelay(delay: number): Promise<void> {
+    private _simulateServerDelay(): Promise<void> {
+        const delay = Math.floor(Math.random() * (300 - 200 + 1)) + 200;
         console.log(`Simulating a delay of ${delay}ms...`); // for debugging
         return new Promise((resolve) => setTimeout(resolve, delay));
     }

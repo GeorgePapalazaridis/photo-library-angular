@@ -1,8 +1,8 @@
 # PhotoLibraryAngular
 
-This project is a **Photo Library** application developed with **Angular version 17.3.11**. The application features dynamic photo streams, favorites functionality, and detailed photo views. It adheres to Angular best practices, including **standalone components**, **change detection strategies**, and **clean architecture**.
+Welcome to **PhotoLibraryAngular**, a **dynamic photo library** application built with **Angular 17.3.11**. This app provides features such as infinite scrolling, the ability to manage favorite photos, and detailed full-screen photo views. The app follows **Angular best practices**, including **standalone components**, **OnPush change detection**, and a **clean architecture** design pattern.
 
-## Features
+## 🚀 Features
 
 -   **Infinite scrolling** photo grid
 -   Add and manage **favorite photos**
@@ -13,7 +13,10 @@ This project is a **Photo Library** application developed with **Angular version
 -   **SCSS** for styling with global theming support
 -   Mock services to simulate API behavior
 
-## Implemented Features
+![App Screenshot - Infinity Loading - Three cols Photo Grid](https://github.com/user-attachments/assets/b5ae52a6-f7af-4829-b765-8dd44f4f3953)
+
+
+## 💻 Implemented Features
 
 ### Photo Grid Component
 
@@ -34,13 +37,31 @@ This project is a **Photo Library** application developed with **Angular version
 -   Users can view individual photos in full-screen mode at `/photos/:id`.
 -   Allows removing photos from Favorites.
 
-## Planned Features
+## ⚙️ Installation
 
--   Develop the Favorites and Detail View components.
--   Create a shared header for navigation between routes.
--   Add unit tests for all components and services.
+To run the project locally:
 
-## Git and Project Workflow
+1. Clone the repository:
+
+    ```bash
+    git clone https://github.com/GeorgePapalazaridis/photo-library-angular.git
+    ```
+
+2. Install dependencies:
+
+    ```bash
+    npm install
+    ```
+
+3. Run the development server:
+
+    ```bash
+    ng serve
+    ```
+
+4. Navigate to `http://localhost:4200/` to view the app in your browser.
+
+## 🧑‍💻 Git and Project Workflow
 
 I’ve used **Git** to manage this project’s development, and this repository reflects how I approached version control during the process. Here are some key points about my Git usage:
 
@@ -48,9 +69,7 @@ I’ve used **Git** to manage this project’s development, and this repository 
 -   **Commits**: I ensured that each commit message is descriptive and tied to an issue where applicable. For example, each commit related to a feature or bug is linked to an issue number like `Fixes #12`. You can explore the commit history [here](https://github.com/GeorgePapalazaridis/photo-library-angular/commits?author=GeorgePapalazaridis&since=2024-11-28&until=2024-11-30).
 -   **Branching**: I used branching to isolate features and keep development structured. Feature branches were created for each task, ensuring a clean history.
 
-> **Note**: Due to a misunderstanding with GitHub during the initial setup, I created my own repository instead of forking the DevSkills repo. Please note that this repository may not reflect the original DevSkills repo structure, but you can still view my commits, issue tracking, and progress as intended.
-
-## File Structure
+## 📂 File Structure
 
 The project is organized into the following key folders:
 
@@ -62,16 +81,16 @@ The project is organized into the following key folders:
     -   **`dto`**: Data Transfer Objects for API communication.
     -   **`interfaces`**: Shared TypeScript interfaces.
     -   **`pipes`**: Placeholder for reusable pipes (currently unused).
-    -   **`services`**: Angular services. - `photo.service.ts`: Mock service for fetching photos. - `breakpoint.service.ts`: Service for responsive mat-grid-list. - `favorites.service.ts`: Service for CRUL actions on photos.
-    -   **`theming`**:
-        -   Global SCSS files for theming and browser normalization.
+    -   **`services`**: Angular services.
+        -   `photo.service.ts`: Mock service for fetching photos.
+        -   `breakpoint.service.ts`: Service for responsive mat-grid-list.
+        -   `favorites.service.ts`: Service for CRUL actions on photos.
+    -   **`theming`**: Global SCSS files for theming and browser normalization.
 -   **`src/app/shared`**:
-    -   **`loading-spinner`**:
-        -   A reusable loading spinner component.
--   **`src/assets`**:
-    -   Static assets like images and internationalization files.
+    -   **`loading-spinner`**: A reusable loading spinner component.
+-   **`src/assets`**: Static assets like images and internationalization files.
 
-## Development Setup
+## 🛠️ Development Setup
 
 1. **Development Server**
    Run `ng serve` to start the development server. Navigate to `http://localhost:4200/`. The application will automatically reload when source files are modified.
@@ -85,7 +104,7 @@ The project is organized into the following key folders:
 4. **Unit Tests**
    Execute `ng test` to run unit tests using [Karma](https://karma-runner.github.io).
 
-## Current Status
+## 📈 Current Status
 
 -   Project setup and folder structure have been finalized.
 -   Routes are configured in `app.config.ts`.
@@ -94,7 +113,7 @@ The project is organized into the following key folders:
 
 ---
 
-## 📂 Project Structure
+## 🗂️ Project Structure
 
 ```plaintext
 photo-library-angular/
@@ -145,7 +164,7 @@ photo-library-angular/
 │   │   │   │   ├── ├── _main.scss
 │   │   │   │   ├── ├── _menu.scss
 │   │   │       │   └── _responsive.scss
-│   │   │       ├── normalize.scss    
+│   │   │       ├── normalize.scss
 │   │   │       ├── styles.scss                    # Application-wide SCSS styles
 │   │   │       └── theme-variable.scss
 │   │   ├── shared/                                # Shared reusable components

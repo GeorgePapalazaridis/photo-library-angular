@@ -10,28 +10,44 @@ export class FavoritesService {
     constructor() {}
 
     getFavorites(): PhotoDto[] {
-        const favorites = localStorage.getItem(this._favoritesKey);
-        const parsedFavorites = JSON.parse(favorites || "[]");
-
-        return parsedFavorites;
+        try {
+            const favorites = localStorage.getItem(this._favoritesKey);
+            const parsedFavorites = JSON.parse(favorites || "[]");
+            return parsedFavorites;
+        } catch (error) {
+            console.error("Failed to get favorites from localStorage:", error);
+            return [];
+        }
     }
 
     addToFavorites(photo: PhotoDto): void {
-        const favorites = this.getFavorites();
+        try {
+            const favorites = this.getFavorites();
 
-        if (!favorites.find((item) => item.id === photo.id)) {
-            favorites.push(photo);
-
-            localStorage.setItem(this._favoritesKey, JSON.stringify(favorites));
+            if (!favorites.find((item) => item.id === photo.id)) {
+                favorites.push(photo);
+                localStorage.setItem(
+                    this._favoritesKey,
+                    JSON.stringify(favorites)
+                );
+            }
+        } catch (error) {
+            console.error("Failed to add photo to favorites:", error);
         }
     }
 
     removeFromFavorites(photoId: string): void {
-        const favorites = this.getFavorites();
-        const updateFavorites = favorites.filter((item) => item.id !== photoId);
-        localStorage.setItem(
-            this._favoritesKey,
-            JSON.stringify(updateFavorites)
-        );
+        try {
+            const favorites = this.getFavorites();
+            const updatedFavorites = favorites.filter(
+                (item) => item.id !== photoId
+            );
+            localStorage.setItem(
+                this._favoritesKey,
+                JSON.stringify(updatedFavorites)
+            );
+        } catch (error) {
+            console.error("Failed to remove photo from favorites:", error);
+        }
     }
 }

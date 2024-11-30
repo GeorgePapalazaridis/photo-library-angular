@@ -1,34 +1,35 @@
 # PhotoLibraryAngular
 
-This project is a Photo Library application developed with Angular version 17.3.11. The application features dynamic photo streams, favorites functionality, and detailed photo views. It adheres to Angular best practices, including standalone components, change detection strategies, and clean architecture.
+This project is a **Photo Library** application developed with **Angular version 17.3.11**. The application features dynamic photo streams, favorites functionality, and detailed photo views. It adheres to Angular best practices, including **standalone components**, **change detection strategies**, and **clean architecture**.
 
 ## Features
 
--   Infinite scrolling photo grid
--   Add and manage favorite photos
+-   **Infinite scrolling** photo grid
+-   Add and manage **favorite photos**
 -   View details of individual photos
--   Organized and scalable file structure
--   Uses Angular Standalone Components and OnPush Change Detection
--   SCSS for styling with global theming support
+-   **Responsive design** for both mobile and desktop
+-   **Organized and scalable file structure**
+-   Uses **Angular Standalone Components** and **OnPush Change Detection**
+-   **SCSS** for styling with global theming support
 -   Mock services to simulate API behavior
 
 ## Implemented Features
 
-### Photo Grid Component (#3)
+### Photo Grid Component
 
 -   **Infinite Scrolling**: Displays photos dynamically as the user scrolls down, using Angular's `IntersectionObserver`.
 -   **Mock API Service**: Fetches photos with simulated delays to mimic real-world server behavior.
--   **Responsive Design**: Built using Angular Material's `mat-grid-list`.
+-   **Responsive Design**: Built using Angular Material's `mat-grid-list` to adjust the layout for both mobile and desktop views.
 -   **Loading Spinner**: Shows a spinner while photos are being fetched.
 -   **File Structure**: Integrated into the `photo-grid` directory under `components`.
 
-### Favorites Functionality (Upcoming)
+### Favorites Functionality
 
 -   Users can add photos to a Favorites library.
--   Favorites persist after page refresh using local storage.
+-   Favorites persist after page refresh using **local storage**.
 -   A dedicated `/favorites` route will display all saved photos.
 
-### Detailed View (Upcoming)
+### Detailed Photo View
 
 -   Users can view individual photos in full-screen mode at `/photos/:id`.
 -   Allows removing photos from Favorites.
@@ -39,24 +40,29 @@ This project is a Photo Library application developed with Angular version 17.3.
 -   Create a shared header for navigation between routes.
 -   Add unit tests for all components and services.
 
+## Git and Project Workflow
+
+I’ve used **Git** to manage this project’s development, and this repository reflects how I approached version control during the process. Here are some key points about my Git usage:
+
+-   **Issues**: I created issues for each task to track progress and ensure that features were developed in an organized manner. You can view all the issues in this repository [here](https://github.com/GeorgePapalazaridis/photo-library-angular/issues).
+-   **Commits**: I ensured that each commit message is descriptive and tied to an issue where applicable. For example, each commit related to a feature or bug is linked to an issue number like `Fixes #12`. You can explore the commit history [here](https://github.com/GeorgePapalazaridis/photo-library-angular/commits?author=GeorgePapalazaridis&since=2024-11-28&until=2024-11-30).
+-   **Branching**: I used branching to isolate features and keep development structured. Feature branches were created for each task, ensuring a clean history.
+
+> **Note**: Due to a misunderstanding with GitHub during the initial setup, I created my own repository instead of forking the DevSkills repo. Please note that this repository may not reflect the original DevSkills repo structure, but you can still view my commits, issue tracking, and progress as intended.
+
 ## File Structure
 
 The project is organized into the following key folders:
 
 -   **`src/app/components`**:
-    -   **`photo-grid`**:
-        -   Handles infinite scrolling photo grids.
-        -   Includes `photo-grid.component.html`, `photo-grid.component.scss`, and `photo-grid.component.ts`.
-    -   **`favorites`**:
-        -   Placeholder for the Favorites library (to be implemented).
-    -   **`photo-detail`**:
-        -   Placeholder for the photo detail view (to be implemented).
+    -   **`photo-grid`**: Handles infinite scrolling photo grids.
+    -   **`favorites`**: Placeholder for the Favorites library.
+    -   **`photo-detail`**: Placeholder for the photo detail view.
 -   **`src/app/core`**:
     -   **`dto`**: Data Transfer Objects for API communication.
     -   **`interfaces`**: Shared TypeScript interfaces.
     -   **`pipes`**: Placeholder for reusable pipes (currently unused).
-    -   **`services`**:
-        -   `photo.service.ts`: Mock service for fetching photos.
+    -   **`services`**: Angular services. - `photo.service.ts`: Mock service for fetching photos. - `breakpoint.service.ts`: Service for responsive mat-grid-list. - `favorites.service.ts`: Service for CRUL actions on photos.
     -   **`theming`**:
         -   Global SCSS files for theming and browser normalization.
 -   **`src/app/shared`**:
@@ -86,6 +92,8 @@ The project is organized into the following key folders:
 -   Global SCSS styles are loaded through `core/theming/styles.scss`.
 -   Initial components and service structure are ready for further implementation.
 
+---
+
 ## 📂 Project Structure
 
 ```plaintext
@@ -95,40 +103,60 @@ photo-library-angular/
 ├── src/
 │   ├── app/                                       # Application-specific files
 │   │   ├── components/                            # Feature components
+│   │   │   ├── favorites/                         # Favorites list component
+│   │   │   │   ├── favorites.component.html
+│   │   │   │   ├── favorites.component.scss
+│   │   │   │   ├── favorites.component.ts
+│   │   │   │   └── favorites.component.spec.ts
+│   │   │   ├── header/                         # Favorites list component
+│   │   │   │   ├── header.component.html
+│   │   │   │   ├── header.component.scss
+│   │   │   │   ├── header.component.ts
+│   │   │   │   └── header.component.spec.ts
+│   │   │   └── photo-detail/                      # Photo detail view component
+│   │   │   │   ├── photo-detail.component.html
+│   │   │   │   ├── photo-detail.component.scss
+│   │   │   │   ├── photo-detail.component.ts
+│   │   │   │   └── photo-detail.component.spec.ts
 │   │   │   ├── photo-grid/                        # Infinite photo grid component
 │   │   │   │   ├── photo-grid.component.html
 │   │   │   │   ├── photo-grid.component.scss
 │   │   │   │   ├── photo-grid.component.ts
 │   │   │   │   └── photo-grid.component.spec.ts
-│   │   │   ├── favorites/                         # Favorites list component (Upcoming)
-│   │   │   └── photo-detail/                      # Photo detail view component (Upcoming)
 │   │   ├── core/                                  # Core services and utilities
 │   │   │   ├── dto/                               # Data Transfer Objects
 │   │   │   │   ├── photo
 │   │   │   │   │   └── photo.ts
-│   │   │   │   └── index.ts  
+│   │   │   │   └── index.ts
 │   │   │   ├── interfaces/                        # Shared TypeScript interfaces
-│   │   │   │   └── index.ts  
+│   │   │   │   └── index.ts
 │   │   │   ├── pipes/                             # Placeholder for reusable pipes
-│   │   │   │   └── index.ts  
+│   │   │   │   └── index.ts
 │   │   │   ├── services/                          # Angular services
+│   │   │   │   ├── breakpoint
+│   │   │   │   │   └── breakpoint.service.ts
+│   │   │   │   ├── favorites
+│   │   │   │   │   └── favorites.service.ts
 │   │   │   │   ├── photo
 │   │   │   │   │   └── photo.service.ts
 │   │   │   │   └── index.ts
 │   │   │   └── theming/                           # Global SCSS styles and theming
 │   │   │       ├── layouts
-│   │   │       │   └── _main.scss
+│   │   │   │   ├── ├── _main.scss
+│   │   │   │   ├── ├── _menu.scss
+│   │   │       │   └── _responsive.scss
+│   │   │       ├── normalize.scss    
 │   │   │       ├── styles.scss                    # Application-wide SCSS styles
 │   │   │       └── theme-variable.scss
 │   │   ├── shared/                                # Shared reusable components
 │   │   │   ├── loading-spinner/                   # Loading spinner component
 │   │   │   │   └── loading-spinner.component.ts
-│   │   ├── app.component.ts      
-│   │   ├── app.config.ts      
+│   │   ├── app.component.ts
+│   │   ├── app.config.ts
 │   ├── assets/                                    # Static assets
 │   │   ├── i18n/                                  # Internationalization JSON files
 │   │   └── images/                                # Project images
-│   │       └── placeholder-image.png  
+│   │       └── placeholder-image.png
 │   ├── environments/                              # Environment-specific settings
 │   ├── favicon.ico                                # Application icon
 │   ├── index.html                                 # Main HTML entry point

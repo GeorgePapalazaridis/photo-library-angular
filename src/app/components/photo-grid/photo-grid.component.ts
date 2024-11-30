@@ -14,10 +14,15 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 import { PhotoDto } from "@photoLibrary/dto";
-import { FavoritesService, PhotoService } from "@photoLibrary/services";
+import {
+    BreakpointService,
+    FavoritesService,
+    PhotoService,
+} from "@photoLibrary/services";
 import { LoadingSpinnerComponent } from "@photoLibrary/shared";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: "app-photo-grid",
@@ -37,6 +42,8 @@ import { MatButtonModule } from "@angular/material/button";
     encapsulation: ViewEncapsulation.None,
 })
 export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
+    private _breakpointSubscription!: Subscription;
+
     private _observer!: IntersectionObserver;
     private _maxPhotos = 300;
     private _totalPhotosFetched = 0;
@@ -44,17 +51,26 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild("scrollAnchor", { static: true }) scrollAnchor!: ElementRef;
 
     photos: PhotoDto[] = [];
-    isLoading = false;
+    isLoading: boolean = false;
+    breakpoint: number = 3;
 
     constructor(
         private _photoService: PhotoService,
         private _favoritesService: FavoritesService,
-        private _cd: ChangeDetectorRef
+        private _cd: ChangeDetectorRef,
+        public breakpointService: BreakpointService
     ) {}
 
     ngOnInit(): void {
         console.log("PhotoGridComponent initialized.");
         this._loadInitialPhotos();
+
+        // Subscribe to the breakpoint changes
+        this._breakpointSubscription = this.breakpointService
+            .getBreakpoint()
+            .subscribe((breakpoint) => {
+                this.breakpoint = breakpoint;
+            });
     }
 
     ngAfterViewInit(): void {
@@ -66,6 +82,10 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         if (this._observer) {
             console.log("[INFO] Disconnecting IntersectionObserver...");
             this._observer.disconnect();
+        }
+
+        if (this._breakpointSubscription) {
+            this._breakpointSubscription.unsubscribe();
         }
     }
 

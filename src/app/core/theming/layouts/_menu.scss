@@ -15,6 +15,7 @@ nav.header-nav {
     align-items: center;
     box-shadow: 0 4px 8px rgba(224, 204, 204, 0.1);
     gap: 5rem;
+    transition: padding 0.3s ease, gap 0.3s ease;
 }
 
 .header-nav button {
@@ -23,7 +24,8 @@ nav.header-nav {
     color: #191919;
     padding: 10px 20px;
     border-radius: 8px;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease,
+        font-size 0.3s ease, padding 0.3s ease;
     border: none;
 }
 
@@ -39,13 +41,27 @@ nav.header-nav {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 600px) {
+@media (max-width: 900px) {
     .header-nav {
-        padding: 10px 15px;
+        padding: 13px 20px;
+        gap: 3rem;
     }
 
     .header-nav button {
         font-size: 14px;
         padding: 8px 16px;
+    }
+}
+
+@media (max-width: 650px) {
+    .header-nav {
+        padding: 10px 15px;
+        gap: 2rem;
+    }
+
+    .header-nav button {
+        font-size: 14px;
+        padding: 8px 16px;
+        margin-bottom: 10px;
     }
 }

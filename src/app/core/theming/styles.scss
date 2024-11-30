@@ -1,10 +1,13 @@
 @import "./layouts/main.scss";
 @import "./layouts/responsive.scss";
+@import "./layouts/menu.scss";
 @import "./normalize.scss";
 @import "./theme-variables.scss";
 
 mat-grid-list {
-    border: 1px solid black;
+    border: 1px solid var(--mat-grid-border);
+    border-radius: 12px;
+    background-color: var(--mat-grid-bg-color);
 }
 
 .spinner-container {
@@ -19,7 +22,4 @@ mat-grid-list {
     height: 10px;
     width: 100%;
     background: transparent;
-
-    // for debugging
-    //  background: rgba(255, 0, 0, 0.5); /* Semi-transparent red for debugging */
 }

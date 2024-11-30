@@ -3,16 +3,18 @@ import {
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
+    OnDestroy,
     OnInit,
     ViewEncapsulation,
 } from "@angular/core";
 import { PhotoDto } from "@photoLibrary/dto";
-import { FavoritesService } from "@photoLibrary/services";
+import { BreakpointService, FavoritesService } from "@photoLibrary/services";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterModule } from "@angular/router";
+import { Subscription } from "rxjs";
 
 @Component({
     selector: "app-favorites",
@@ -30,17 +32,34 @@ import { RouterModule } from "@angular/router";
     changeDetection: ChangeDetectionStrategy.OnPush,
     encapsulation: ViewEncapsulation.None,
 })
-export class FavoritesComponent implements OnInit {
+export class FavoritesComponent implements OnInit, OnDestroy {
+    private _breakpointSubscription!: Subscription;
+
     favorites: PhotoDto[] = [];
+    breakpoint: number = 3;
 
     constructor(
         private _favoritesService: FavoritesService,
-        private _cd: ChangeDetectorRef
+        private _cd: ChangeDetectorRef,
+        public breakpointService: BreakpointService
     ) {}
 
     ngOnInit(): void {
         console.log("FavoritesComponent initialized.");
         this.loadFavorites();
+
+        // Subscribe to the breakpoint changes
+        this._breakpointSubscription = this.breakpointService
+            .getBreakpoint()
+            .subscribe((breakpoint) => {
+                this.breakpoint = breakpoint;
+            });
+    }
+
+    ngOnDestroy(): void {
+        if (this._breakpointSubscription) {
+            this._breakpointSubscription.unsubscribe();
+        }
     }
 
     loadFavorites(): void {

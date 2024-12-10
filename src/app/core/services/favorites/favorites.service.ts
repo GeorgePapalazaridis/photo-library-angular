@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
-import { PhotoDto } from "@photoLibrary/dto";
+import { LocalStorageService } from "../local-storage/local-storage.service";
+import { Photo } from "@photoLibrary/interfaces";
 
 @Injectable({
     providedIn: "root",
@@ -7,28 +8,29 @@ import { PhotoDto } from "@photoLibrary/dto";
 export class FavoritesService {
     private readonly _favoritesKey = "favorites";
 
-    constructor() {}
+    constructor(private _localStorageService: LocalStorageService) {}
 
-    getFavorites(): PhotoDto[] {
+    getFavorites(): Photo[] {
         try {
-            const favorites = localStorage.getItem(this._favoritesKey);
-            const parsedFavorites = JSON.parse(favorites || "[]");
-            return parsedFavorites;
+            const favorites = this._localStorageService.getItem<Photo[]>(
+                this._favoritesKey || []
+            );
+            return favorites;
         } catch (error) {
             console.error("Failed to get favorites from localStorage:", error);
             return [];
         }
     }
 
-    addToFavorites(photo: PhotoDto): void {
+    addToFavorites(photo: Photo): void {
         try {
             const favorites = this.getFavorites();
 
             if (!favorites.find((item) => item.id === photo.id)) {
                 favorites.push(photo);
-                localStorage.setItem(
+                this._localStorageService.setItem(
                     this._favoritesKey,
-                    JSON.stringify(favorites)
+                    favorites
                 );
             }
         } catch (error) {
@@ -42,9 +44,9 @@ export class FavoritesService {
             const updatedFavorites = favorites.filter(
                 (item) => item.id !== photoId
             );
-            localStorage.setItem(
+            this._localStorageService.setItem(
                 this._favoritesKey,
-                JSON.stringify(updatedFavorites)
+                updatedFavorites
             );
         } catch (error) {
             console.error("Failed to remove photo from favorites:", error);

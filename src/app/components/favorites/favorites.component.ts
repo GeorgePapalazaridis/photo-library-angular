@@ -7,7 +7,6 @@ import {
     OnInit,
     ViewEncapsulation,
 } from "@angular/core";
-import { PhotoDto } from "@photoLibrary/dto";
 import { BreakpointService, FavoritesService } from "@photoLibrary/services";
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
@@ -15,6 +14,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { RouterModule } from "@angular/router";
 import { Subscription } from "rxjs";
+import { Photo } from "@photoLibrary/interfaces";
 
 @Component({
     selector: "app-favorites",
@@ -35,7 +35,7 @@ import { Subscription } from "rxjs";
 export class FavoritesComponent implements OnInit, OnDestroy {
     private _breakpointSubscription!: Subscription;
 
-    favorites: PhotoDto[] = [];
+    favorites: Photo[] = [];
     breakpoint: number = 3;
 
     constructor(

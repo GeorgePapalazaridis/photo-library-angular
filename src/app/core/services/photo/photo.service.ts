@@ -1,5 +1,9 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { PhotoDto } from "@photoLibrary/dto";
+import { PicsumPhotoDto } from "@photoLibrary/dto";
+import { Photo } from "@photoLibrary/interfaces";
+import { catchError, map, Observable, throwError } from "rxjs";
+import { environment } from "src/environments/environment";
 
 /**
  * PhotoService
@@ -12,26 +16,28 @@ import { PhotoDto } from "@photoLibrary/dto";
     providedIn: "root",
 })
 export class PhotoService {
-    private readonly BASE_URL = "https://picsum.photos/id"; // Endpoint for fetching by ID
+    private readonly BASE_URL = environment.BASE_URL; // From environment file
+    private readonly IMAGE_BASE_URL = environment.IMAGE_BASE_URL; // From environment file
 
-    getRandomPhotos(count: number = 3): PhotoDto[] {
-        console.log(`Fetching ${count} random photos...`);
-        const photos: PhotoDto[] = [];
+    constructor(private _http: HttpClient) {}
 
-        // Get random numbers for photo IDs (you can modify this to use a range or API if needed)
-        const randomPhotoIds = Array.from({ length: count }, () =>
-            Math.floor(Math.random() * 1000)
-        ); // Assuming 1000 images
+    getRandomPhotos(count: number = 3): Observable<Photo[]> {
+        const randomPage = Math.floor(Math.random() * 100) + 1; // Assuming 100 pages exist
+        const url = `${this.BASE_URL}?page=${randomPage}&limit=${count}`;
 
-        randomPhotoIds.forEach((photoId, index) => {
-            photos.push({
-                id: photoId.toString(),
-                url: `${this.BASE_URL}/${photoId}/300/200`, // URL format for Picsum
-                title: `Photo ${index + 1}`,
-            });
-        });
-
-        console.log("Generated photos:", photos);
-        return photos;
+        return this._http.get<PicsumPhotoDto[]>(url).pipe(
+            map((photos) =>
+                photos.map((photo, index) => ({
+                    id: photo.id,
+                    url: `${this.IMAGE_BASE_URL}/id/${photo.id}/300/200?random=${index}`, // Use specific ID and size
+                    title: photo.author,
+                }))
+            ),
+            catchError((error) => {
+                console.error("Error fetching photos", error);
+                throwError(()=>"Error fetching photos");
+                return [];
+            })
+        );
     }
 }

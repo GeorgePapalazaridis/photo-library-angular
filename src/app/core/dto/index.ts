@@ -1,1 +1,1 @@
-export * from "./photo/photo.dto";
+export * from "./photo/picsum-photo.dto";

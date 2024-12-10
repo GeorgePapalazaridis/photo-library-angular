@@ -13,7 +13,6 @@ import {
 import { MatGridListModule } from "@angular/material/grid-list";
 import { MatCardModule } from "@angular/material/card";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
-import { PhotoDto } from "@photoLibrary/dto";
 import {
     BreakpointService,
     FavoritesService,
@@ -23,6 +22,7 @@ import { LoadingSpinnerComponent } from "@photoLibrary/shared";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
 import { Subscription } from "rxjs";
+import { Photo } from "@photoLibrary/interfaces";
 
 @Component({
     selector: "app-photo-grid",
@@ -50,7 +50,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @ViewChild("scrollAnchor", { static: true }) scrollAnchor!: ElementRef;
 
-    photos: PhotoDto[] = [];
+    photos: Photo[] = [];
     isLoading: boolean = false;
     breakpoint: number = 3;
 
@@ -89,7 +89,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    toggleFavorite(photo: PhotoDto): void {
+    toggleFavorite(photo: Photo): void {
         console.log("Toggling favorite for photo:", photo); // for debugging
 
         if (this.isFavorite(photo)) {
@@ -100,7 +100,7 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    isFavorite(photo: PhotoDto): boolean {
+    isFavorite(photo: Photo): boolean {
         return this._favoritesService
             .getFavorites()
             .some((favorite) => favorite.id === photo.id);
@@ -157,11 +157,15 @@ export class PhotoGridComponent implements OnInit, AfterViewInit, OnDestroy {
             await this._simulateServerDelay(); // Simulate server delay
 
             console.log(`Fetching ${count} random photos...`); // for debugging
-            const newPhotos = this._photoService.getRandomPhotos(count);
-            this.photos = [...this.photos, ...newPhotos];
-            this._totalPhotosFetched += newPhotos.length;
-            console.log("Loaded photos:", newPhotos); // for debugging
-            console.log(`Total photos fetched: ${this._totalPhotosFetched}`); // for debugging
+            this._photoService.getRandomPhotos(count).subscribe((newPhotos) => {
+                this.photos = [...this.photos, ...newPhotos];
+                this._totalPhotosFetched += newPhotos.length;
+
+                console.log("Loaded photos:", newPhotos); // for debugging
+                console.log(
+                    `Total photos fetched: ${this._totalPhotosFetched}`
+                ); // for debugging
+            });
 
             // Reconnect the observer to recheck the scroll anchor
             if (this.scrollAnchor && this._observer) {

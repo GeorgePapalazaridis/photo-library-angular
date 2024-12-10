@@ -10,7 +10,7 @@ import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatIconModule } from "@angular/material/icon";
 import { ActivatedRoute, Router } from "@angular/router";
-import { PhotoDto } from "@photoLibrary/dto";
+import { Photo } from "@photoLibrary/interfaces";
 import { FavoritesService } from "@photoLibrary/services";
 
 @Component({
@@ -23,7 +23,7 @@ import { FavoritesService } from "@photoLibrary/services";
     encapsulation: ViewEncapsulation.None,
 })
 export class PhotoDetailComponent implements OnInit {
-    photo!: PhotoDto;
+    photo!: Photo;
 
     constructor(
         private _route: ActivatedRoute,

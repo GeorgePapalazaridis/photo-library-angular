@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { PhotoDto } from "@photoLibrary/dto";
 import { LocalStorageService } from "../local-storage/local-storage.service";
+import { Photo } from "@photoLibrary/interfaces";
 
 @Injectable({
     providedIn: "root",
@@ -10,9 +10,9 @@ export class FavoritesService {
 
     constructor(private _localStorageService: LocalStorageService) {}
 
-    getFavorites(): PhotoDto[] {
+    getFavorites(): Photo[] {
         try {
-            const favorites = this._localStorageService.getItem<PhotoDto[]>(
+            const favorites = this._localStorageService.getItem<Photo[]>(
                 this._favoritesKey || []
             );
             return favorites;
@@ -22,7 +22,7 @@ export class FavoritesService {
         }
     }
 
-    addToFavorites(photo: PhotoDto): void {
+    addToFavorites(photo: Photo): void {
         try {
             const favorites = this.getFavorites();
 
